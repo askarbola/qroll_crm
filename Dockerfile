@@ -54,6 +54,9 @@ RUN npm install && npm run build
 RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache
 
+# Add trusted proxy configuration for Railway
+RUN echo "<?php return ['proxies' => '*', 'headers' => \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR | \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST | \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT | \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO];" > config/trustedproxy.php
+
 EXPOSE 8000
 
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
