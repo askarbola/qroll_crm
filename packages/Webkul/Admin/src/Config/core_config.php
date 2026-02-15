@@ -311,4 +311,40 @@ return [
             ],
         ],
     ],
+
+    /**
+     * Telegram.
+     */
+    [
+        'key'  => 'telegram',
+        'name' => 'admin::app.configuration.index.telegram.title',
+        'info' => 'admin::app.configuration.index.telegram.info',
+        'sort' => 4,
+    ], [
+        'key'  => 'telegram.settings',
+        'name' => 'admin::app.configuration.index.telegram.settings.title',
+        'info' => 'admin::app.configuration.index.telegram.settings.info',
+        'icon' => 'icon-setting',
+        'sort' => 1,
+    ], [
+        'key'    => 'telegram.settings.connection',
+        'name'   => 'admin::app.configuration.index.telegram.settings.connection.title',
+        'info'   => 'admin::app.configuration.index.telegram.settings.connection.info',
+        'sort'   => 1,
+        'fields' => [
+            [
+                'name'       => 'bot_token',
+                'title'      => 'admin::app.configuration.index.telegram.settings.bot-token',
+                'type'       => 'password',
+                'validation' => 'required_with:telegram.settings.connection.chat_id',
+                'info'       => 'admin::app.configuration.index.telegram.settings.bot-token-info',
+            ], [
+                'name'       => 'chat_id',
+                'title'      => 'admin::app.configuration.index.telegram.settings.chat-id',
+                'type'       => 'text',
+                'validation' => 'required_with:telegram.settings.connection.bot_token|nullable|integer',
+                'info'       => 'admin::app.configuration.index.telegram.settings.chat-id-info',
+            ],
+        ],
+    ],
 ];

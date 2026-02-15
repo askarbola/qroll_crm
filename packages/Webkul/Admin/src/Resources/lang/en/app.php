@@ -2190,6 +2190,26 @@ return [
                 ],
             ],
 
+            'telegram' => [
+                'title' => 'Telegram',
+                'info'  => 'Configure Telegram bot for notifications.',
+
+                'settings' => [
+                    'title' => 'Settings',
+                    'info'  => 'Telegram bot settings.',
+
+                    'connection' => [
+                        'title' => 'Connection',
+                        'info'  => 'Configure your Telegram bot connection settings here.',
+                    ],
+
+                    'bot-token'      => 'Bot Token',
+                    'bot-token-info' => 'Get from @BotFather on Telegram.',
+                    'chat-id'        => 'Group Chat ID',
+                    'chat-id-info'   => 'Group chat ID as negative number (e.g., -100123456789).',
+                ],
+            ],
+
             'magic-ai' => [
                 'title' => 'Magic AI',
                 'info'  => 'Magic AI configuration for the application.',
