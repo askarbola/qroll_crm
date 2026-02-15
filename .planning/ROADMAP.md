@@ -26,6 +26,12 @@
 
 **Dependencies:** None — first phase.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Configuration structure and test endpoint (backend)
+- [ ] 01-02-PLAN.md — Test button UI and end-to-end verification
+
 ---
 
 ## Phase 2: Stage Change Notifications
