@@ -2207,6 +2207,7 @@ return [
                     'bot-token-info' => 'Get from @BotFather on Telegram.',
                     'chat-id'        => 'Group Chat ID',
                     'chat-id-info'   => 'Group chat ID as negative number (e.g., -100123456789).',
+                    'test-connection' => 'Test Connection',
                 ],
             ],
 

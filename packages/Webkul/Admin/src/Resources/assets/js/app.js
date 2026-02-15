@@ -17,6 +17,10 @@ window.app = createApp({
             isMenuActive: false,
 
             hoveringMenu: '',
+
+            testingConnection: false,
+
+            testResult: null,
         };
     },
 
@@ -30,6 +34,35 @@ window.app = createApp({
 
     methods: {
         onSubmit() {},
+
+        async testTelegramConnection() {
+            const botToken = document.querySelector('input[name="telegram.settings.connection.bot_token"]')?.value;
+            const chatId = document.querySelector('input[name="telegram.settings.connection.chat_id"]')?.value;
+
+            if (!botToken || !chatId) {
+                this.testResult = { success: false, message: 'Please enter both Bot Token and Group Chat ID' };
+                return;
+            }
+
+            this.testingConnection = true;
+            this.testResult = null;
+
+            try {
+                const response = await this.$axios.post(
+                    '/admin/settings/configuration/telegram/test',
+                    { bot_token: botToken, chat_id: chatId }
+                );
+
+                this.testResult = response.data;
+            } catch (error) {
+                this.testResult = {
+                    success: false,
+                    message: error.response?.data?.message || 'Connection test failed'
+                };
+            } finally {
+                this.testingConnection = false;
+            }
+        },
 
         onInvalidSubmit({ values, errors, results }) {
             setTimeout(() => {

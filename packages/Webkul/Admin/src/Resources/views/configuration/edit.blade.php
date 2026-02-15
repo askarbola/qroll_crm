@@ -45,6 +45,22 @@
                     @lang('admin::app.configuration.index.save-btn')
                 </button>
 
+                @if(request()->query('group') === 'telegram')
+                <button
+                    type="button"
+                    class="secondary-button ml-2"
+                    @click="testTelegramConnection"
+                    :disabled="testingConnection"
+                >
+                    <span v-if="!testingConnection">@lang('admin::app.configuration.index.telegram.settings.test-connection')</span>
+                    <span v-else>Testing...</span>
+                </button>
+
+                <div v-if="testResult" class="mt-2 p-2 rounded" :class="testResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                    @{{ testResult.message }}
+                </div>
+                @endif
+
                 {!! view_render_event('admin.configuration.edit.save_button.after') !!}
             </div>
         </div>
