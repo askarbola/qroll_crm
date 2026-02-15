@@ -6,6 +6,8 @@ use Webkul\Admin\Http\Controllers\Configuration\ConfigurationController;
 Route::controller(ConfigurationController::class)->prefix('configuration')->group(function () {
     Route::get('search', 'search')->name('admin.configuration.search');
 
+    Route::post('telegram/test', 'testTelegramConnection')->name('admin.configuration.telegram.test');
+
     Route::prefix('{slug?}/{slug2?}')->group(function () {
         Route::get('', 'index')->name('admin.configuration.index');
 
