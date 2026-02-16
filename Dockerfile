@@ -57,6 +57,10 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
 # Add trusted proxy configuration for Railway
 RUN echo "<?php return ['proxies' => '*', 'headers' => \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR | \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST | \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT | \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO];" > config/trustedproxy.php
 
+# Copy and prepare entrypoint script
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
 EXPOSE 8000
 
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+CMD ["/app/docker-entrypoint.sh"]
