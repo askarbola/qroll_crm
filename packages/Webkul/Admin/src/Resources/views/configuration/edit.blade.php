@@ -46,19 +46,7 @@
                 </button>
 
                 @if(request()->route('slug') === 'telegram')
-                <button
-                    type="button"
-                    class="secondary-button ml-2"
-                    @click="testTelegramConnection"
-                    :disabled="testingConnection"
-                >
-                    <span v-if="!testingConnection">@lang('admin::app.configuration.index.telegram.settings.test-connection')</span>
-                    <span v-else>Testing...</span>
-                </button>
-
-                <div v-if="testResult" class="mt-2 p-2 rounded" :class="testResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-                    @{{ testResult.message }}
-                </div>
+                    <v-telegram-test-button></v-telegram-test-button>
                 @endif
 
                 {!! view_render_event('admin.configuration.edit.save_button.after') !!}
@@ -98,4 +86,74 @@
     </x-admin::form>
 
     {!! view_render_event('admin.configuration.edit.form_controls.after') !!}
+
+    @if(request()->route('slug') === 'telegram')
+        @pushOnce('scripts')
+            <script type="text/x-template" id="v-telegram-test-button-template">
+                <div class="flex items-center gap-2">
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        @@click="testConnection"
+                        :disabled="testing"
+                    >
+                        <span v-if="!testing">@lang('admin::app.configuration.index.telegram.settings.test-connection')</span>
+                        <span v-else>Testing...</span>
+                    </button>
+
+                    <div
+                        v-if="result"
+                        class="p-2 rounded text-sm"
+                        :class="result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                    >
+                        @{{ result.message }}
+                    </div>
+                </div>
+            </script>
+
+            <script type="module">
+                app.component('v-telegram-test-button', {
+                    template: '#v-telegram-test-button-template',
+
+                    data() {
+                        return {
+                            testing: false,
+                            result: null,
+                        };
+                    },
+
+                    methods: {
+                        async testConnection() {
+                            const botToken = document.querySelector('input[name="telegram[settings][connection][bot_token]"]')?.value;
+                            const chatId = document.querySelector('input[name="telegram[settings][connection][chat_id]"]')?.value;
+
+                            if (!botToken || !chatId) {
+                                this.result = { success: false, message: 'Please enter both Bot Token and Group Chat ID' };
+                                return;
+                            }
+
+                            this.testing = true;
+                            this.result = null;
+
+                            try {
+                                const response = await this.$axios.post(
+                                    '{{ route("admin.configuration.telegram.test") }}',
+                                    { bot_token: botToken, chat_id: chatId }
+                                );
+
+                                this.result = response.data;
+                            } catch (error) {
+                                this.result = {
+                                    success: false,
+                                    message: error.response?.data?.message || 'Connection test failed',
+                                };
+                            } finally {
+                                this.testing = false;
+                            }
+                        },
+                    },
+                });
+            </script>
+        @endPushOnce
+    @endif
 </x-admin::layouts>
