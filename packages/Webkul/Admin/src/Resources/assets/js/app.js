@@ -36,8 +36,8 @@ window.app = createApp({
         onSubmit() {},
 
         async testTelegramConnection() {
-            const botToken = document.querySelector('input[name="telegram.settings.connection.bot_token"]')?.value;
-            const chatId = document.querySelector('input[name="telegram.settings.connection.chat_id"]')?.value;
+            const botToken = document.querySelector('input[name="telegram[settings][connection][bot_token]"]')?.value;
+            const chatId = document.querySelector('input[name="telegram[settings][connection][chat_id]"]')?.value;
 
             if (!botToken || !chatId) {
                 this.testResult = { success: false, message: 'Please enter both Bot Token and Group Chat ID' };

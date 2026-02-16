@@ -45,7 +45,7 @@
                     @lang('admin::app.configuration.index.save-btn')
                 </button>
 
-                @if(request()->query('group') === 'telegram')
+                @if(request()->route('slug') === 'telegram')
                 <button
                     type="button"
                     class="secondary-button ml-2"
