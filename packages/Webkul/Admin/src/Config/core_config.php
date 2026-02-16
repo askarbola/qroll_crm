@@ -336,13 +336,11 @@ return [
                 'name'       => 'bot_token',
                 'title'      => 'admin::app.configuration.index.telegram.settings.bot-token',
                 'type'       => 'password',
-                'validation' => 'required_with:telegram.settings.connection.chat_id',
                 'info'       => 'admin::app.configuration.index.telegram.settings.bot-token-info',
             ], [
                 'name'       => 'chat_id',
                 'title'      => 'admin::app.configuration.index.telegram.settings.chat-id',
                 'type'       => 'text',
-                'validation' => 'required_with:telegram.settings.connection.bot_token|nullable|integer',
                 'info'       => 'admin::app.configuration.index.telegram.settings.chat-id-info',
             ],
         ],
