@@ -5,7 +5,10 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\ndocs: initialize milestone v1.0 — Telegram stage notifications\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
       "WebSearch",
-      "Skill(gsd:plan-phase)"
+      "Skill(gsd:plan-phase)",
+      "Bash(ls -la \"C:\\\\Projects\\\\qroll-crm\\\\qroll_crm\\\\bootstrap\\\\cache\"\" 2>/dev/null || echo \"Cache directory not found \")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: prevent installer wizard from wiping database on Railway redeploys\n\nAdd docker-entrypoint.sh that generates .env from Railway environment\nvariables and creates storage/installed marker, so the app recognizes\nit''s already installed instead of showing the installer wizard \\(which\nruns migrate:fresh and wipes existing data\\).\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
     ]
   }
 }
