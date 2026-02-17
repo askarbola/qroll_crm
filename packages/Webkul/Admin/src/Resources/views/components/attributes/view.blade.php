@@ -8,7 +8,7 @@
 <div class="flex flex-col gap-1">
     @foreach ($customAttributes as $attribute)
         @if (view()->exists($typeView = 'admin::components.attributes.view.' . $attribute->type))
-            <div class="grid grid-cols-[1fr_2fr] items-center gap-1">
+            <div class="grid grid-cols-[1fr_2fr] items-center gap-1" data-attribute-code="{{ $attribute->code }}">
                 <div class="label dark:text-white">{{ $attribute->name }}</div>
 
                 <div class="font-medium dark:text-white">

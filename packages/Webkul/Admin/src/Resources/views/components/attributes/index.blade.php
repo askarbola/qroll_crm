@@ -15,7 +15,7 @@
         $validations = implode('|', array_filter($validations));
     @endphp
 
-    <x-admin::form.control-group class="mb-2.5 w-full">
+    <x-admin::form.control-group class="mb-2.5 w-full" data-attribute-code="{{ $attribute->code }}">
         <x-admin::form.control-group.label
             for="{{ $attribute->code }}"
             :class="$attribute->is_required ? 'required' : ''"
