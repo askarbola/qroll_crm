@@ -3,9 +3,9 @@
 ## Current Position
 
 Phase: 3 of 3 — In Progress
-Plan: 1 of N complete
-Status: Plan 03-01 complete — attributes migration and data-attribute-code identifiers done
-Last activity: 2026-02-17 — Plan 03-01 executed (9 person attributes + wrapper identifiers)
+Plan: 2 of N — Checkpoint pending
+Status: Plan 03-02 Tasks 1-2 complete — conditional visibility added, awaiting human verification (Task 3)
+Last activity: 2026-02-17 — Plan 03-02 executed (conditional field visibility on create/edit/view pages)
 
 ## Project Reference
 
@@ -23,7 +23,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 |---|-------|--------|
 | 1 | Telegram Settings | :white_check_mark: Complete (2/2 plans) |
 | 2 | Stage Notifications | :white_check_mark: Complete (1/1 plans) |
-| 3 | Add Additional Details While Creating Contacts | In Progress (1/? plans) |
+| 3 | Add Additional Details While Creating Contacts | In Progress (2/? plans, checkpoint pending) |
 
 ## Accumulated Context
 
@@ -45,6 +45,9 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 - EAV system auto-renders new attributes on person create/edit/view forms — no template changes needed
 - data-attribute-code identifiers on attribute wrapper divs enable JS-based conditional visibility
 - entity_type_tax used instead of entity_type to avoid column name conflict in attributes table
+- Plan 03-02 complete (Tasks 1-2): v-contact-type-toggle Vue component on create/edit pages, DOMContentLoaded script on view page
+- Conditional visibility: Individual fields (SSN, DOB, Filing Status, Occupation) show only for Individual; Business fields (Business Name, EIN, Entity Type Tax, Fiscal Year End) show only for Business
+- Option text matching pattern: iterate select options to find dynamic IDs by matching textContent rather than hardcoding
 
 ### Roadmap Evolution
 - Phase 3 added: Add additional details while creating contacts
@@ -61,6 +64,9 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 - **entity_type_tax code (03-01):** Used entity_type_tax as attribute code for Entity Type to avoid conflict with entity_type column in attributes table
 - **quick_add=0 for all (03-01):** Set quick_add=0 for all 9 new attributes to keep lead creation inline form simple
 - **Idempotent migration (03-01):** Existence checks before every insert for safe re-run capability
+- **Vue wrapper pattern (03-02):** v-contact-type-toggle component wraps attributes with transparent div+slot for field visibility toggling
+- **Option text matching (03-02):** Iterate select options textContent to map dynamic EAV-generated IDs to Individual/Business values
+- **DOMContentLoaded for view (03-02):** Static text-based visibility on view page, no reactive handling needed
 
 ## Performance Metrics
 
@@ -69,12 +75,13 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 | 01-01      | 64s      | 2     | 4     | 2026-02-15 |
 | 02-01      | ~2m      | 1     | 2     | 2026-02-15 |
 | 03-01      | 5m       | 2     | 3     | 2026-02-17 |
+| 03-02      | 2m       | 2     | 3     | 2026-02-17 |
 
 ## Session Continuity
 
 Last session: 2026-02-17
-Stopped at: Completed 03-01-PLAN.md
-Resume file: N/A
+Stopped at: 03-02-PLAN.md Task 3 checkpoint:human-verify — awaiting end-to-end verification
+Resume file: .planning/phases/03-add-additional-details-while-creating-contacts/03-02-PLAN.md
 
 ---
 *State updated: 2026-02-17*
