@@ -49,22 +49,24 @@
             <div class="box-shadow rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
                 {!! view_render_event('admin.contacts.persons.edit.form_controls.before') !!}
 
-                <x-admin::attributes
-                    :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
-                        ['code', 'NOTIN', ['organization_id']],
-                        'entity_type' => 'persons',
-                    ])"
-                    :custom-validations="[
-                        'name' => [
-                            'min:2',
-                            'max:100',
-                        ],
-                        'job_title' => [
-                            'max:100',
-                        ],
-                    ]"
-                    :entity="$person"
-                />
+                <v-contact-type-toggle>
+                    <x-admin::attributes
+                        :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
+                            ['code', 'NOTIN', ['organization_id']],
+                            'entity_type' => 'persons',
+                        ])"
+                        :custom-validations="[
+                            'name' => [
+                                'min:2',
+                                'max:100',
+                            ],
+                            'job_title' => [
+                                'max:100',
+                            ],
+                        ]"
+                        :entity="$person"
+                    />
+                </v-contact-type-toggle>
 
                 <v-organization></v-organization>
 
@@ -112,6 +114,89 @@
                 methods: {
                     handleLookupAdded(event) {
                         this.organizationName = event?.name || null;
+                    },
+                },
+            });
+        </script>
+    @endPushOnce
+
+    @pushOnce('scripts')
+        <script
+            type="text/x-template"
+            id="v-contact-type-toggle-template"
+        >
+            <div><slot></slot></div>
+        </script>
+
+        <script type="module">
+            app.component('v-contact-type-toggle', {
+                template: '#v-contact-type-toggle-template',
+
+                data() {
+                    return {
+                        individualFields: ['ssn', 'date_of_birth', 'filing_status', 'occupation'],
+                        businessFields: ['business_name', 'ein', 'entity_type_tax', 'fiscal_year_end'],
+                        individualOptionValue: null,
+                        businessOptionValue: null,
+                    };
+                },
+
+                mounted() {
+                    this.$nextTick(() => {
+                        this.initContactTypeToggle();
+                    });
+                },
+
+                methods: {
+                    initContactTypeToggle() {
+                        const select = document.querySelector('[data-attribute-code="contact_type"] select, select[name="contact_type"]');
+
+                        if (!select) return;
+
+                        // Determine option values by matching option text
+                        Array.from(select.options).forEach(option => {
+                            const text = option.textContent.trim();
+                            if (text === 'Individual') this.individualOptionValue = option.value;
+                            if (text === 'Business') this.businessOptionValue = option.value;
+                        });
+
+                        // Hide all type-specific fields initially
+                        this.hideFields([...this.individualFields, ...this.businessFields]);
+
+                        // Show correct fields based on current selection (important for edit page)
+                        this.toggleFields(select.value);
+
+                        // Listen for changes
+                        select.addEventListener('change', (e) => {
+                            this.toggleFields(e.target.value);
+                        });
+                    },
+
+                    toggleFields(selectedValue) {
+                        if (selectedValue === this.individualOptionValue) {
+                            this.showFields(this.individualFields);
+                            this.hideFields(this.businessFields);
+                        } else if (selectedValue === this.businessOptionValue) {
+                            this.showFields(this.businessFields);
+                            this.hideFields(this.individualFields);
+                        } else {
+                            // No selection -- hide all type-specific fields
+                            this.hideFields([...this.individualFields, ...this.businessFields]);
+                        }
+                    },
+
+                    showFields(codes) {
+                        codes.forEach(code => {
+                            const el = document.querySelector(`[data-attribute-code="${code}"]`);
+                            if (el) el.style.display = '';
+                        });
+                    },
+
+                    hideFields(codes) {
+                        codes.forEach(code => {
+                            const el = document.querySelector(`[data-attribute-code="${code}"]`);
+                            if (el) el.style.display = 'none';
+                        });
                     },
                 },
             });
