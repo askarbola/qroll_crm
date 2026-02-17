@@ -38,4 +38,38 @@
     </x-admin::accordion>
 </div>
 
+@pushOnce('scripts')
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', function() {
+            const individualFields = ['ssn', 'date_of_birth', 'filing_status', 'occupation'];
+            const businessFields = ['business_name', 'ein', 'entity_type_tax', 'fiscal_year_end'];
+
+            // Find the contact_type display value
+            const contactTypeRow = document.querySelector('[data-attribute-code="contact_type"]');
+
+            if (!contactTypeRow) return;
+
+            // The view component renders as: <div class="grid grid-cols-[1fr_2fr]"><div>label</div><div class="font-medium">value</div></div>
+            const valueCell = contactTypeRow.querySelector('.font-medium');
+            const contactTypeText = valueCell ? valueCell.textContent.trim() : '';
+
+            function hideFields(codes) {
+                codes.forEach(function(code) {
+                    const el = document.querySelector('[data-attribute-code="' + code + '"]');
+                    if (el) el.style.display = 'none';
+                });
+            }
+
+            if (contactTypeText === 'Individual' || contactTypeText.includes('Individual')) {
+                hideFields(businessFields);
+            } else if (contactTypeText === 'Business' || contactTypeText.includes('Business')) {
+                hideFields(individualFields);
+            } else {
+                // No contact type -- hide all type-specific
+                hideFields([...individualFields, ...businessFields]);
+            }
+        });
+    </script>
+@endPushOnce
+
 {!! view_render_event('admin.contacts.persons.view.attributes.before', ['person' => $person]) !!}
