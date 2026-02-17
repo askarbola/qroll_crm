@@ -2,27 +2,28 @@
 
 ## Current Position
 
-Phase: 2 of 2 — Complete
-Plan: All plans complete
-Status: All phases complete — v1.0 Telegram Stage Notifications delivered
-Last activity: 2026-02-15 — Plan 02-01 executed (Stage change notifications)
+Phase: 3 of 3 — In Progress
+Plan: 1 of N complete
+Status: Plan 03-01 complete — attributes migration and data-attribute-code identifiers done
+Last activity: 2026-02-17 — Plan 03-01 executed (9 person attributes + wrapper identifiers)
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-02-14)
 
 **Core value:** Sales team sees every lead stage change in Telegram instantly
-**Current focus:** Complete — all phases delivered
+**Current focus:** Phase 3 — Add additional details while creating contacts
 
 ## Current Milestone: v1.0 Telegram Stage Notifications
 
-**Phases:** 2
-**Requirements:** 6
+**Phases:** 3
+**Requirements:** 6+
 
 | # | Phase | Status |
 |---|-------|--------|
 | 1 | Telegram Settings | :white_check_mark: Complete (2/2 plans) |
 | 2 | Stage Notifications | :white_check_mark: Complete (1/1 plans) |
+| 3 | Add Additional Details While Creating Contacts | In Progress (1/? plans) |
 
 ## Accumulated Context
 
@@ -40,6 +41,13 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 - Listener uses wasChanged() to filter non-stage updates, loadMissing() for efficient queries
 - Silent failure pattern: catches Throwable, logs errors, never breaks stage changes
 - HTML escaping on all dynamic values prevents injection in Telegram messages
+- Plan 03-01 complete: 9 person attributes added via EAV migration (contact_type, ssn, date_of_birth, filing_status, occupation, business_name, ein, entity_type_tax, fiscal_year_end)
+- EAV system auto-renders new attributes on person create/edit/view forms — no template changes needed
+- data-attribute-code identifiers on attribute wrapper divs enable JS-based conditional visibility
+- entity_type_tax used instead of entity_type to avoid column name conflict in attributes table
+
+### Roadmap Evolution
+- Phase 3 added: Add additional details while creating contacts
 
 ## Decisions
 
@@ -50,6 +58,9 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 - **Error resilience (02-01):** Catch \Throwable (not Exception) to ensure stage changes never fail due to Telegram
 - **Efficient loading (02-01):** Use loadMissing() to avoid redundant queries if relationships already loaded
 - **HTML safety (02-01):** escapeHtml() on all dynamic values for Telegram HTML parse mode safety
+- **entity_type_tax code (03-01):** Used entity_type_tax as attribute code for Entity Type to avoid conflict with entity_type column in attributes table
+- **quick_add=0 for all (03-01):** Set quick_add=0 for all 9 new attributes to keep lead creation inline form simple
+- **Idempotent migration (03-01):** Existence checks before every insert for safe re-run capability
 
 ## Performance Metrics
 
@@ -57,12 +68,13 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 |------------|----------|-------|-------|-----------|
 | 01-01      | 64s      | 2     | 4     | 2026-02-15 |
 | 02-01      | ~2m      | 1     | 2     | 2026-02-15 |
+| 03-01      | 5m       | 2     | 3     | 2026-02-17 |
 
 ## Session Continuity
 
-Last session: 2026-02-15
-Stopped at: All phases complete — v1.0 milestone delivered
+Last session: 2026-02-17
+Stopped at: Completed 03-01-PLAN.md
 Resume file: N/A
 
 ---
-*State updated: 2026-02-15*
+*State updated: 2026-02-17*
